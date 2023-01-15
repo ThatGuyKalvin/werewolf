@@ -1,25 +1,19 @@
 <template>
-    <div class="post">
+    <div class="characters">
         <div v-if="loading" class="loading">
             Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationvue">https://aka.ms/jspsintegrationvue</a> for more details.
         </div>
 
-        <div v-if="post" class="content">
+        <div v-if="characters" class="content">
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Temp. (C)</th>
-                        <th>Temp. (F)</th>
-                        <th>Summary</th>
+                        <th>Characters</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="forecast in post" :key="forecast.date">
-                        <td>{{ forecast.date }}</td>
-                        <td>{{ forecast.temperatureC }}</td>
-                        <td>{{ forecast.temperatureF }}</td>
-                        <td>{{ forecast.summary }}</td>
+                    <tr v-for="x in characters" v-bind:key="name">
+                        <td>{{ x.name }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -30,20 +24,20 @@
 <script lang="ts">
     import { defineComponent } from 'vue';
 
-    type Forecasts = {
-        date: string
+    type Characters = {
+        name: string
     }[];
 
     interface Data {
         loading: boolean,
-        post: null | Forecasts
+        characters: null | Characters
     }
 
     export default defineComponent({
         data(): Data {
             return {
                 loading: false,
-                post: null
+                characters: null
             };
         },
         created() {
@@ -57,13 +51,13 @@
         },
         methods: {
             fetchData(): void {
-                this.post = null;
+                this.characters = null;
                 this.loading = true;
 
-                fetch('weatherforecast')
+                fetch('game/getcharacters')
                     .then(r => r.json())
                     .then(json => {
-                        this.post = json as Forecasts;
+                        this.characters = json as Characters;
                         this.loading = false;
                         return;
                     });
