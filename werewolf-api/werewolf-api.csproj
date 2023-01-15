@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\werewolf-webapp\werewolf-webapp.esproj">
+    <ProjectReference Include="..\werewolf-app\werewolf-app.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
