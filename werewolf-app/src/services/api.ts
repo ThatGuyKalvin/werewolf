@@ -16,7 +16,16 @@ export default {
             return false;
         }
     },
-    createSession(userId: string) {
-        return axios().post(`/Session?userId=${userId}`)
-    }
+    async createSession(userId: string) {
+        try {
+            const response = await axios().post(`/Session?userId=${userId}`);
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return false;
+            }
+        } catch (error) {
+            return false;
+        }
+    },
 }

@@ -3,20 +3,16 @@
         <n-form-item path="name" label="Name">
             <n-input v-model:value="model.name" @keydown.enter.prevent placeholder="Name"/>
         </n-form-item>
-        <n-form-item path="sessionId" label="SessionId">
-            <n-input v-model:value="model.sessionId"
-                     @keydown.enter.prevent placeholder="SessionId"/>
-        </n-form-item>
         <n-row :gutter="[0, 24]">
             <n-col :span="24">
                 <div style="display: flex; justify-content: flex-end">
-                    <n-button :disabled="!model.name || !model.sessionId"
+                    <n-button :disabled="!model.name"
                               round
-                              type="primary"
+                              type="info"
                               strong
                               secondary
                               @click="handleValidateButtonClick">
-                        Join a session
+                        Create a session
                     </n-button>
                 </div>
             </n-col>
@@ -38,7 +34,6 @@
 
     interface ModelType {
         name: string
-        sessionId: string
     }
 
     export default defineComponent({
@@ -47,12 +42,7 @@
             const message = useMessage()
             const modelRef = ref<ModelType>({
                 name: '',
-                sessionId: ''
             })
-            function capitalizeSessionId(): boolean {
-                modelRef.value.sessionId = modelRef.value.sessionId?.toUpperCase()
-                return true
-            }
 
             const rules: FormRules = {
                 name: [
@@ -62,18 +52,6 @@
                         min: 2,
                         message: 'Please enter your name.'
                     }
-                ],
-                sessionId: [
-                    {
-                        required: true,
-                        message: 'Please enter a valid 4 character session ID.',
-                        trigger: 'blur',
-                        len: 4
-                    },
-                    {
-                        validator: capitalizeSessionId,
-                        trigger: 'input'
-                    },
                 ]
             } 
 
@@ -86,20 +64,20 @@
                     async (errors: Array<FormValidationError> | undefined) => {
                         if (!errors) {
                             //modelRef.value.sessionId = modelRef.value.sessionId?.toUpperCase()
-                            await api.validateSession(modelRef.value.sessionId).then((value) => {
-                                if (value === true) {
+                            await api.createSession(modelRef.value.name).then((value) => {
+                                if (value != false) {
                                     userStore.setName(modelRef.value.name)
-                                    userStore.setSessionId(modelRef.value.sessionId)
-                                    userStore.setIsHost(false)
+                                    userStore.setSessionId(value)
+                                    userStore.setIsHost(true)
                                     router.push({ name: 'GameAsPlayer' })
-                                    message.success(`Joining session ${modelRef.value.sessionId}`)
+                                    message.success(`Create session ${value}`)
                                 }
-                                else message.warning('Invalid session ID')
+                                else message.warning('Failed to create session')
                             })
                             
                         } else {
                             console.log(errors)
-                            message.error('Enter a valid 4 character session ID')
+                            message.error('Enter a valid name')
                         }
                     }
                 )
@@ -116,8 +94,9 @@
 </script>
 
 <style>
-    .form {
-        padding-right: 40px;
-        padding-left: 40px;
-    }
+.form {
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
 </style>

@@ -1,6 +1,6 @@
 <template>
     <n-space vertical>
-      <n-button strong secondary :loading="loading" icon-placement="left" @click="handleClick" type="info">
+      <n-button strong secondary :loading="loading" icon-placement="left" @click="handleCreateClick" type="info">
         Start a new session
       </n-button>
 
@@ -33,6 +33,9 @@
         methods: {
           handleJoinClick() {
             this.$router.push({ name: 'JoinSession'})
+          },
+          handleCreateClick() {
+            this.$router.push({ name: 'CreateSession'})
           }
         },
     });

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SessionOptions from '@/components/SessionOptions.vue'
 import JoinSessionForm from '@/components/JoinSessionForm.vue'
+import CreateSessionForm from '@/components/CreateSessionForm.vue'
 import GameAsPlayer from '@/components/GameAsPlayer.vue'
 
 export default createRouter({
@@ -24,7 +25,7 @@ export default createRouter({
         {
             name: 'CreateSession',
             path: '/CreateSession',
-            component: JoinSessionForm,
+            component: CreateSessionForm,
         },
     ],
 })
