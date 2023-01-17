@@ -13,5 +13,14 @@ export const useUserStore = defineStore('user', {
     getters: {
     },
     actions: {
+        setName(name: string) {
+            this.name = name
+        },
+        setSessionId(sessionId: string) {
+            this.sessionId = sessionId
+        },
+        setIsHost(isHost: boolean) {
+            this.isHost = isHost
+        },
     },
 })

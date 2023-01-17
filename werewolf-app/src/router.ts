@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SessionOptions from '@/components/SessionOptions.vue'
 import JoinSessionForm from '@/components/JoinSessionForm.vue'
+import GameAsPlayer from '@/components/GameAsPlayer.vue'
 
 export default createRouter({
     history: createWebHistory(),
@@ -9,6 +10,11 @@ export default createRouter({
             name: 'Home',
             path: '/',
             component: SessionOptions,
+        },
+        {
+            name: 'GameAsPlayer',
+            path: '/Play',
+            component: GameAsPlayer,
         },
         {
             name: 'JoinSession',

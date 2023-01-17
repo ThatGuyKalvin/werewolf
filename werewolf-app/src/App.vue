@@ -1,18 +1,22 @@
 <template>
     <div class="app" id="app">
-        <img alt="Logo" src="logo.png">
-        <n-loading-bar-provider>
-            <n-message-provider>
-                <n-notification-provider>
-                    <n-dialog-provider>
-                        <p>name: {{name}}</p>
-                        <p>sessionId: {{sessionId}}</p>
-                        <p>isHost: {{isHost}}</p>
-                        <router-view></router-view>
-                    </n-dialog-provider>
-                </n-notification-provider>
-            </n-message-provider>
-        </n-loading-bar-provider>
+        <div class="logo" id="logo">
+            <a href="/" alt="Go to home page"><img class="logo" alt="Logo" src="logo.png"></a>
+        </div>
+        <div class="main" id="main">
+            <n-loading-bar-provider>
+                <n-message-provider>
+                    <n-notification-provider>
+                        <n-dialog-provider>
+                            <p>name: {{name}}</p>
+                            <p>sessionId: {{sessionId}}</p>
+                            <p>isHost: {{isHost}}</p>
+                            <router-view></router-view>
+                        </n-dialog-provider>
+                    </n-notification-provider>
+                </n-message-provider>
+            </n-loading-bar-provider>
+        </div>
     </div>
 </template>
 
@@ -41,8 +45,19 @@ export default defineComponent({
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+#logo {
+    -moz-transform: scale(0.5);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+    border: 5px solid green;
+    margin-top: -75px;
+    text-align: center;
+}
+
+#main {
+    text-align: center;
 }
 </style>

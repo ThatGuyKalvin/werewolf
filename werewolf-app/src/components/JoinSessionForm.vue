@@ -10,7 +10,7 @@
         <n-row :gutter="[0, 24]">
             <n-col :span="24">
                 <div style="display: flex; justify-content: flex-end">
-                    <n-button :disabled="model.name === null || model.sessionId === null"
+                    <n-button :disabled="!model.name || !model.sessionId"
                               round
                               type="primary"
                               strong
@@ -33,10 +33,13 @@
         useMessage,
         FormRules
     } from 'naive-ui'
+    import api from '@/services/api'
+    import { useRouter } from 'vue-router';
+    import { useUserStore } from '@/stores/UserStore'
 
     interface ModelType {
-        name: string | null
-        sessionId: string | undefined
+        name: string
+        sessionId: string
     }
 
     export default defineComponent({
@@ -45,8 +48,8 @@
             const rPasswordFormItemRef = ref<FormItemInst | null>(null)
             const message = useMessage()
             const modelRef = ref<ModelType>({
-                name: null,
-                sessionId: undefined
+                name: '',
+                sessionId: ''
             })
             function capitalizeSessionId(): boolean {
                 modelRef.value.sessionId = modelRef.value.sessionId?.toUpperCase()
@@ -74,6 +77,34 @@
                         trigger: 'input'
                     },
                 ]
+            } 
+
+            const userStore = useUserStore()
+
+            const router = useRouter()
+            const handleValidateButtonClick = async (e: MouseEvent) => {
+                e.preventDefault()
+                formRef.value?.validate(
+                    async (errors: Array<FormValidationError> | undefined) => {
+                        if (!errors) {
+                            //modelRef.value.sessionId = modelRef.value.sessionId?.toUpperCase()
+                            await api.validateSession(modelRef.value.sessionId).then((value) => {
+                                if (value === true) {
+                                    userStore.setName(modelRef.value.name)
+                                    userStore.setSessionId(modelRef.value.sessionId)
+                                    userStore.setIsHost(false)
+                                    router.push({ name: 'GameAsPlayer' })
+                                    message.success(`Joining session ${modelRef.value.sessionId}`)
+                                }
+                                else message.warning('Invalid session ID')
+                            })
+                            
+                        } else {
+                            console.log(errors)
+                            message.error('Enter a valid 4 character session ID')
+                        }
+                    }
+                )
             }
             return {
                 formRef,
@@ -81,20 +112,7 @@
                 model: modelRef,
                 modelRef,
                 rules,
-                handleValidateButtonClick(e: MouseEvent) {
-                    e.preventDefault()
-                    formRef.value?.validate(
-                        (errors: Array<FormValidationError> | undefined) => {
-                            if (!errors) {
-                                //modelRef.value.sessionId = modelRef.value.sessionId?.toUpperCase()
-                                message.success(`Joining session ${modelRef.value.sessionId}`)
-                            } else {
-                                console.log(errors)
-                                message.error('Enter a valid 4 character session ID')
-                            }
-                        }
-                    )
-                }
+                handleValidateButtonClick
             }
         },
     })
