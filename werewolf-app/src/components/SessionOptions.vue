@@ -1,7 +1,5 @@
 <template>
     <n-space vertical>
-      <img alt="Logo" src="logo.png">
-
       <n-button strong secondary :loading="loading" icon-placement="left" @click="handleClick" type="info">
         Start a new session
       </n-button>

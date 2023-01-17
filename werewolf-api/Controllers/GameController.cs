@@ -18,11 +18,19 @@ namespace werewolf_api.Controllers
         }
 
         [HttpGet]
-        [Route("GetCharacters")]
-        public IEnumerable<Character> GetCharacters()
+        [Route("Session")]
+        public IActionResult GetSession(string sessionId)
         {
-            _logger.LogDebug("GetCharacters called");
-            return _gameService.GetCharacters();
+            _logger.LogDebug("Validate session called");
+            return _gameService.DoesSessionExist(sessionId) ? Ok() : NotFound();
+        }
+
+        [HttpPost]
+        [Route("Session")]
+        public string PostSession(string userId)
+        {
+            _logger.LogDebug("Create session called");
+            return _gameService.CreateSession(userId);
         }
     }
 }

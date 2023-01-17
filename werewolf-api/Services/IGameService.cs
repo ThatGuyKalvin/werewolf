@@ -4,6 +4,7 @@ namespace werewolf_api.Services
 {
     public interface IGameService
     {
-        public IEnumerable<Character> GetCharacters();
+        public bool DoesSessionExist(string sessionId);
+        public string CreateSession(string userId);
     }
 }
