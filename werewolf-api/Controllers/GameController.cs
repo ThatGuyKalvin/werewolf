@@ -1,6 +1,9 @@
+using CSharpFunctionalExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using werewolf_api.Models;
 using werewolf_api.Services;
+using werewolf_api.Utilities.Failure;
 
 namespace werewolf_api.Controllers
 {
@@ -19,18 +22,41 @@ namespace werewolf_api.Controllers
 
         [HttpGet]
         [Route("Session")]
-        public IActionResult GetSession(string sessionId)
+        public IActionResult ValidateSession(string sessionId)
         {
             _logger.LogDebug("Validate session called");
             return _gameService.DoesSessionExist(sessionId) ? Ok() : NotFound();
         }
 
+        [HttpPut]
+        [Route("Session")]
+        public string JoinSession(string userId, string sessionId)
+        {
+            return _gameService.JoinSession(userId, sessionId);
+        }
+
         [HttpPost]
         [Route("Session")]
-        public string PostSession(string userId)
+        public string CreateSession(string userId)
         {
-            _logger.LogDebug("Create session called");
             return _gameService.CreateSession(userId);
         }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("Session")]
+        public bool DeleteSession()
+        {
+            return _gameService.DeleteSession();
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("Session/Players")]
+        public List<Player> GetPlayers()
+        {
+            return _gameService.GetPlayers();
+        }
+
     }
 }

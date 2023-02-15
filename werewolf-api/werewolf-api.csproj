@@ -8,13 +8,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.37.0" />
+    <PackageReference Include="CSharpRailway" Version="3.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.26.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\werewolf-app\werewolf-app.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Middleware\" />
   </ItemGroup>
 
 </Project>
